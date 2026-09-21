@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bookify — Student Dashboard</title>
+<link rel="stylesheet" href="d.css">
+</head>
+<body>
+
+<div class="dashboard-page">
+  <div class="top-bar">
+    <div class="top-bar-logo">
+      <img src="lg_no_bg.png" alt="Bookify">
+      <span>Bookify</span>
+    </div>
+    <div class="top-bar-icons">
+      <button class="icon-btn" onclick="toggleNotif()">
+        🔔
+        <span class="badge" id="notifBadge">0</span>
+      </button>
+      <button class="icon-btn" id="profileBtn" onclick="openProfile()">👤</button>
+      <a href="settings.html" class="icon-btn">⚙️</a>
+      <div id="notifDropdown" class="notif-dropdown hidden">
+        <h4>🔔 Notifications</h4>
+        <div id="notifContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-content student-layout">
+    <div class="card card-borrowed">
+      <h3>CURRENTLY BORROWED</h3>
+      <table class="borrowed-table">
+        <thead>
+          <tr><th>Due Date</th><th>Title</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>09/17/2026</td><td>Clean Architecture</td></tr>
+          <tr><td></td><td></td></tr>
+          <tr><td></td><td></td></tr>
+          <tr><td></td><td></td></tr>
+          <tr><td></td><td></td></tr>
+          <tr><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card card-fines">
+      <h3>OUTSTANDING FINES</h3>
+      <div class="fine-amount">₱20.00</div>
+      <div class="fine-reason">Clean Architecture · 4 days overdue</div>
+      <button class="pay-btn" onclick="alert('Redirecting to payment...')">Pay now</button>
+    </div>
+
+    <div class="card card-calendar">
+      <h3>CALENDAR</h3>
+      <div class="calendar-widget">
+        <div class="calendar-header">
+          <span>◀</span>
+          <span id="calendarMonth">September 2026</span>
+          <span>▶</span>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+      <div class="calendar-legend">
+        <span><span class="legend-dot today-dot"></span>Today</span>
+        <span><span class="legend-dot overdue-dot"></span>Overdue</span>
+        <span><span class="legend-dot returned-dot"></span>Returned</span>
+      </div>
+    </div>
+
+    <div class="card card-reservations">
+      <h3>MY RESERVATIONS</h3>
+      <div class="reservation-item">
+        <div class="title">Data Structures</div>
+        <div class="meta">QUEUE: #2</div>
+        <div class="meta">Waiting...</div>
+      </div>
+    </div>
+
+    <div class="card card-search">
+      <div class="search-bar">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" placeholder="Search books by title, author, ISBN..." id="bookSearch" oninput="handleBookSearch(this.value)">
+        <span>☰</span>
+      </div>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+
+    <div class="card card-history">
+      <h3>BORROWING HISTORY</h3>
+      <div class="history-item">
+        <span class="book-title">Design Patterns</span>
+        <span class="return-date">Returned 09/12/2026</span>
+      </div>
+      <div class="history-item">
+        <span class="book-title">The Pragmatic Programmer</span>
+        <span class="return-date">Returned 04/05/2026</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modalOverlay" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 id="modalTitle">Title</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modalBody" class="modal-body"></div>
+  </div>
+</div>
+
+<script src="j.js"></script>
+<script>
+  buildCalendar('calendarGrid', 'calendarMonth');
+  loadProfileIcon();
+  loadNotifications();
+</script>
+</body>
+</html>

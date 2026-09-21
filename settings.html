@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bookify — Settings</title>
+<link rel="stylesheet" href="d.css">
+</head>
+<body>
+
+<div class="dashboard-page">
+  <div class="top-bar">
+    <div class="top-bar-logo">
+      <img src="lg_no_bg.png" alt="Bookify">
+      <span>Bookify</span>
+    </div>
+    <div class="top-bar-icons">
+      <button class="icon-btn" onclick="toggleNotif()">
+        🔔
+        <span class="badge" id="notifBadge">0</span>
+      </button>
+      <button class="icon-btn" id="profileBtn" onclick="openProfile()">👤</button>
+      <a href="javascript:history.back()" class="icon-btn">⚙️</a>
+      <div id="notifDropdown" class="notif-dropdown hidden">
+        <h4>🔔 Notifications</h4>
+        <div id="notifContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-header">
+      <h2>⚙️ Settings</h2>
+    </div>
+
+    <div class="settings-section">
+      <h3>Account</h3>
+      <div class="settings-item" onclick="openChangePicture()">
+        <span>Change Profile Picture</span><span class="arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="openChangeName()">
+        <span>Change Profile Name</span><span class="arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="openChangeUsername()">
+        <span>Change Username</span><span class="arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="openChangePassword()">
+        <span>Change Password</span><span class="arrow">›</span>
+      </div>
+    </div>
+
+    <div class="settings-section admin-only" style="display: none;">
+      <h3>Admin Controls</h3>
+      <div class="settings-item" onclick="openDashboardPanel()">
+        <span>📊 View Dashboard</span><span class="arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="openReports()">
+        <span>📈 Generate Reports</span><span class="arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="openManageUsers()">
+        <span>👥 Manage Users</span><span class="arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="openPolicies()">
+        <span>⚙️ Configure Policies</span><span class="arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="openAuditTrail()">
+        <span>📋 View Audit Trail</span><span class="arrow">›</span>
+      </div>
+    </div>
+
+    <div class="settings-section admin-only" style="display: none;">
+      <h3>General Settings</h3>
+      <div class="settings-item"><span>Fine Rate per Day</span><span id="prefFineRate">₱5.00</span></div>
+      <div class="settings-item"><span>Lost Item Threshold</span><span id="prefLostThreshold">3 days</span></div>
+      <div class="settings-item"><span>Student Borrow Limit</span><span id="prefStudentLimit">3 books</span></div>
+      <div class="settings-item"><span>Faculty Borrow Limit</span><span id="prefFacultyLimit">5 books</span></div>
+      <div class="settings-item"><span>Hold Expiration</span><span id="prefHoldExpiration">24 hours</span></div>
+    </div>
+
+    <div class="settings-section">
+      <h3>Session</h3>
+      <div class="settings-item" onclick="logout()">
+        <span>Logout</span><span class="arrow">›</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modalOverlay" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 id="modalTitle">Title</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modalBody" class="modal-body"></div>
+  </div>
+</div>
+
+<script src="j.js"></script>
+<script>
+  loadProfileIcon();
+  loadNotifications();
+
+  const users = JSON.parse(localStorage.getItem('bookifyUsers') || '{}');
+  const loggedIn = localStorage.getItem('loggedInUser');
+  const currentUser = users[loggedIn];
+
+  if (currentUser && currentUser.role === 'librarian') {
+    document.querySelectorAll('.admin-only').forEach(el => {
+      el.style.display = 'block';
+    });
+    loadPreferences();
+  }
+
+  function loadPreferences() {
+    const prefs = JSON.parse(localStorage.getItem('bookifyPreferences') || '{}');
+    document.getElementById('prefFineRate').textContent = '₱' + (prefs.fineRate || '5.00');
+    document.getElementById('prefLostThreshold').textContent = (prefs.lostThreshold || '3') + ' days';
+    document.getElementById('prefStudentLimit').textContent = (prefs.studentLimit || '3') + ' books';
+    document.getElementById('prefFacultyLimit').textContent = (prefs.facultyLimit || '5') + ' books';
+    document.getElementById('prefHoldExpiration').textContent = (prefs.holdExpiration || '24') + ' hours';
+  }
+</script>
+</body>
+</html>
